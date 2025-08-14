@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="public/logo.svg" alt="EchoScribe" width="80" />
+</p>
+<h1 align="center">EchoScribe</h1>
+
 EchoScribe — Transcription App (OpenAI + S3)
 
 Overview
