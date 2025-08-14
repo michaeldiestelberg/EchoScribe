@@ -1,0 +1,17 @@
+{
+  "watch": ["src"],
+  "ext": "js,json",
+  "ignore": [
+    "public/*",
+    "../public/*",
+    "*.log",
+    "logs/*",
+    ".env",
+    "../server/.env"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "exec": "node -r dotenv/config"
+}
+
