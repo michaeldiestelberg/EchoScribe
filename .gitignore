@@ -1,0 +1,52 @@
+# General
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.local
+
+# Logs
+logs
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Node
+node_modules/
+server/node_modules/
+
+# Env files (do not commit secrets)
+.env
+.env.*
+server/.env
+server/.env.*
+
+# Test coverage / caches
+coverage/
+.nyc_output/
+.cache/
+
+# Build outputs / temp
+dist/
+build/
+.tmp/
+tmp/
+temp/
+
+# Framework outputs (common)
+.next/
+.vercel/
+.expo/
+.expo-shared/
+
+# Editors/IDE
+.vscode/
+.idea/
+*.iml
+
+# Fly.io
+.fly/
+

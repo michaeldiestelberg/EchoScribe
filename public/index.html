@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EchoScribe</title>
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="/logo.svg" alt="EchoScribe" class="brand-logo" />
+          <span class="brand-name">EchoScribe</span>
+        </div>
+        <div class="sidebar-top">
+          <button id="newBtn" class="new-btn">
+            <span class="icon-plus" aria-hidden="true">+</span>
+            <span>New Transcription</span>
+          </button>
+        </div>
+        <div class="sidebar-title">Transcriptions</div>
+        <div id="jobs" class="job-list"></div>
+      </aside>
+      <main class="main">
+        <header class="header">
+          <div class="header-title">
+            <img class="header-logo" src="/logo.svg" alt="EchoScribe" />
+            <span id="headerTitle">Upload and Transcribe</span>
+          </div>
+          <div class="header-actions">
+            <div class="status" id="status"></div>
+            <button id="settingsBtn" class="icon-btn" title="Settings">⚙️ Settings</button>
+          </div>
+        </header>
+        <section id="composerSection" class="composer">
+          <form id="uploadForm" class="uploader" autocomplete="off">
+            <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload audio or video by click or drag & drop">
+              <div class="dz-inner">
+                <div class="dz-icon">🎧</div>
+                <div class="dz-text">
+                  <div class="dz-title">Drop audio/video here</div>
+                  <div class="dz-sub">or click to browse</div>
+                </div>
+              </div>
+              <input type="file" id="file" name="file" accept="audio/*,video/*" />
+            </div>
+            <div class="actions">
+              <span id="fileName" class="file-name">No file selected</span>
+              <button id="startBtn" type="submit" disabled>Start Transcription</button>
+            </div>
+          </form>
+        </section>
+        <section id="contentSection" class="content" style="display:none">
+          <div id="details" class="details"></div>
+          <div id="progress" class="progress"></div>
+          <div id="output" class="output">
+            <div class="output-header">
+              <span>Transcript (Markdown)</span>
+              <div class="output-actions">
+                <button id="copyBtn" class="icon-btn">Copy</button>
+                <button id="downloadBtn" class="icon-btn" title="Download transcript" style="display:none">Download</button>
+                <button id="deleteBtn" class="icon-btn danger" title="Delete transcription" style="display:none">
+                  <span class="icon-trash" aria-hidden="true">🗑</span>
+                </button>
+              </div>
+            </div>
+            <pre id="markdown"></pre>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="settingsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 id="settingsTitle">Settings</h2>
+          <button id="settingsClose" class="icon-btn">✕</button>
+        </div>
+        <div id="onboardingHint" class="hint" style="display:none">Welcome! Please enter your OpenAI and S3 settings to get started.</div>
+        <form id="settingsForm" class="settings-form">
+          <div class="field">
+            <label>OpenAI API Key</label>
+            <input type="password" id="OPENAI_API_KEY" placeholder="sk-..." />
+          </div>
+          <div class="field two">
+            <div>
+              <label>AWS Access Key ID</label>
+              <input type="text" id="AWS_ACCESS_KEY_ID" placeholder="AKIA..." />
+            </div>
+            <div>
+              <label>AWS Secret Access Key</label>
+              <input type="password" id="AWS_SECRET_ACCESS_KEY" placeholder="••••••" />
+            </div>
+          </div>
+          <div class="field two">
+            <div>
+              <label>AWS Region</label>
+              <input type="text" id="AWS_REGION" placeholder="us-east-1" />
+            </div>
+            <div>
+              <label>S3 Bucket</label>
+              <input type="text" id="S3_BUCKET" placeholder="my-transcription-app-prod" />
+            </div>
+          </div>
+          <div class="field two">
+            <div>
+              <label>Audio Bitrate (kbps)</label>
+              <input type="number" id="TRANSCRIBE_AUDIO_BITRATE_KBPS" min="16" max="192" />
+            </div>
+            <div>
+              <label>Max Chunk Size (MB)</label>
+              <input type="number" id="TRANSCRIBE_MAX_CHUNK_MB" min="2" max="24" />
+            </div>
+          </div>
+          <div class="field two">
+            <div>
+              <label>Max Chunk Duration (sec)</label>
+              <input type="number" id="TRANSCRIBE_MAX_DURATION_SEC" min="60" max="1800" />
+            </div>
+            <div>
+              <label>Public Base URL (optional)</label>
+              <input type="text" id="PUBLIC_BASE_URL" placeholder="http://localhost:3000" />
+            </div>
+          </div>
+          <div id="testResult" class="hint" style="display:none"></div>
+          <div class="modal-actions">
+            <div style="margin-right:auto; display:flex; gap:8px">
+              <button type="button" id="testConnectionBtn" class="icon-btn">Test Connection</button>
+            </div>
+            <button type="button" id="settingsCancel" class="icon-btn">Cancel</button>
+            <button type="submit" class="icon-btn" style="background: var(--accent); color: white; border-color: var(--accent)">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+  </html>

@@ -1,0 +1,29 @@
+# Sample Fly.io config. Replace app name before deploying.
+app = "echoscribe-change-me"
+
+# Optional: choose region, e.g. primary_region = "iad"
+# primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [services.concurrency]
+    type = "requests"
+    hard_limit = 100
+    soft_limit = 50
+

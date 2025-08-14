@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10a37f"/>
+      <stop offset="1" stop-color="#1ec8a5"/>
+    </linearGradient>
+  </defs>
+  <!-- Headphones -->
+  <path d="M12 36v6a6 6 0 0 0 6 6h3V34h-3a6 6 0 0 0-6 6Zm34-2h-3v14h3a6 6 0 0 0 6-6v-6a6 6 0 0 0-6-6Z" fill="#222b"/>
+  <path d="M32 12c-11.046 0-20 8.954-20 20v4h4v-4c0-8.837 7.163-16 16-16s16 7.163 16 16v4h4v-4c0-11.046-8.954-20-20-20Z" fill="#222b"/>
+  <!-- Waveform / scribe mark -->
+  <rect x="20" y="28" width="4" height="16" rx="2" fill="url(#g)"/>
+  <rect x="28" y="22" width="4" height="22" rx="2" fill="url(#g)"/>
+  <rect x="36" y="26" width="4" height="18" rx="2" fill="url(#g)"/>
+  <path d="M44 22c-1.2 2.1-2.4 4.2-3.6 6.3 2 .9 3.7 2.6 4.6 4.6 2.1-1.2 4.2-2.4 6.3-3.6-1.6-3.8-4.2-6.4-7.3-7.3Z" fill="url(#g)" opacity=".9"/>
+</svg>
