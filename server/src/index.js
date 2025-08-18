@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 import { ensureFfmpegAvailable } from './media/ffmpeg.js';
 import { getEffectiveConfig, getConfigStatus, updateConfig } from './config/env.js';
+import crypto from 'crypto';
 import { testOpenAIConnection } from './openai/client.js';
 import { testS3Connection } from './s3/client.js';
 import { startTranscriptionJob, getJobStatus, listJobs, getJobResult, deleteJob } from './jobs/processor.js';
@@ -17,9 +18,46 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(express.json());
+
+// Optional Basic Auth middleware
+app.use((req, res, next) => {
+  if (req.path === '/api/health') return next();
+  const enabled = (process.env.APP_AUTH_ENABLED || 'false').toLowerCase() === 'true';
+  const user = process.env.APP_AUTH_USER || '';
+  const pass = process.env.APP_AUTH_PASS || '';
+  const realm = process.env.APP_AUTH_REALM || 'EchoScribe';
+  if (!enabled || !user || !pass) return next();
+  const hdr = req.headers['authorization'] || '';
+  const m = /^Basic\s+(.+)$/.exec(hdr);
+  if (!m) return unauthorized(res, realm);
+  let creds = '';
+  try {
+    creds = Buffer.from(m[1], 'base64').toString('utf8');
+  } catch {
+    return unauthorized(res, realm);
+  }
+  const idx = creds.indexOf(':');
+  if (idx === -1) return unauthorized(res, realm);
+  const u = creds.slice(0, idx);
+  const p = creds.slice(idx + 1);
+  if (!tsEqual(u, user) || !tsEqual(p, pass)) return unauthorized(res, realm);
+  next();
+});
+
+function tsEqual(a, b) {
+  const ab = Buffer.from(String(a));
+  const bb = Buffer.from(String(b));
+  if (ab.length !== bb.length) return false;
+  return crypto.timingSafeEqual(ab, bb);
+}
+function unauthorized(res, realm) {
+  res.set('WWW-Authenticate', `Basic realm="${realm}", charset="UTF-8"`);
+  return res.status(401).send('Authentication required');
+}
+
 // Static UI
 app.use(express.static(path.join(__dirname, '../../public')));
-app.use(express.json());
 
 // In-memory upload storage (buffer), we stream it to temp file right away in pipeline
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 1024 * 1024 * 1024 } });

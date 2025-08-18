@@ -17,6 +17,10 @@ const ALLOWED_KEYS = [
   'TRANSCRIBE_AUDIO_BITRATE_KBPS',
   'TRANSCRIBE_MAX_CHUNK_MB',
   'TRANSCRIBE_MAX_DURATION_SEC',
+  'APP_AUTH_ENABLED',
+  'APP_AUTH_USER',
+  'APP_AUTH_PASS',
+  'APP_AUTH_REALM',
 ];
 
 export function getEffectiveConfig() {
@@ -30,7 +34,11 @@ export function getEffectiveConfig() {
     PUBLIC_BASE_URL: env.PUBLIC_BASE_URL || '',
     TRANSCRIBE_AUDIO_BITRATE_KBPS: env.TRANSCRIBE_AUDIO_BITRATE_KBPS || '48',
     TRANSCRIBE_MAX_CHUNK_MB: env.TRANSCRIBE_MAX_CHUNK_MB || '24',
-    TRANSCRIBE_MAX_DURATION_SEC: env.TRANSCRIBE_MAX_DURATION_SEC || '1400',
+    TRANSCRIBE_MAX_DURATION_SEC: env.TRANSCRIBE_MAX_DURATION_SEC || '300',
+    APP_AUTH_ENABLED: env.APP_AUTH_ENABLED || 'false',
+    APP_AUTH_USER: env.APP_AUTH_USER || '',
+    APP_AUTH_REALM: env.APP_AUTH_REALM || 'EchoScribe',
+    APP_AUTH_PASS_PRESENT: !!env.APP_AUTH_PASS,
   };
 }
 
@@ -49,7 +57,8 @@ export function updateConfig(updates) {
   const sanitized = {};
   for (const k of ALLOWED_KEYS) {
     if (Object.prototype.hasOwnProperty.call(updates, k)) {
-      const v = updates[k];
+      let v = updates[k];
+      if (typeof v === 'boolean') v = String(v);
       if (typeof v === 'string' && v.trim() === '') continue; // ignore blanks
       sanitized[k] = v;
     }

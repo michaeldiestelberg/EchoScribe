@@ -15,7 +15,7 @@ function cfg() {
   return {
     bucket: process.env.S3_BUCKET,
     MAX_MB: parseInt(process.env.TRANSCRIBE_MAX_CHUNK_MB || '24', 10),
-    MAX_DURATION_SEC: parseInt(process.env.TRANSCRIBE_MAX_DURATION_SEC || '1400', 10),
+    MAX_DURATION_SEC: parseInt(process.env.TRANSCRIBE_MAX_DURATION_SEC || '300', 10),
     BITRATE_KBPS: parseInt(process.env.TRANSCRIBE_AUDIO_BITRATE_KBPS || '48', 10),
   };
 }
