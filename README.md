@@ -95,7 +95,7 @@ Environment Variables (server/.env)
 - `TRANSCRIBE_AUDIO_BITRATE_KBPS` — Optional, audio bitrate (default 48)
 - `TRANSCRIBE_MAX_CHUNK_MB` — Optional, per-chunk max MB (default 24)
 - `TRANSCRIBE_MAX_DURATION_SEC` — Optional, per-chunk max seconds (default 300)
-  - Note: We recommend leaving this at ~500 seconds for best reliability and throughput with the current transcription service.
+  - Note: We recommend leaving this at ~300 seconds for best reliability and throughput with the current transcription service.
 
 S3 Setup
 - See `s3-setup.md` for a detailed guide and least-privilege IAM policy.
