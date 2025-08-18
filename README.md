@@ -56,6 +56,17 @@ Run via Docker
 - Open http://localhost:3000
 - Production tip: prefer environment variables/secrets for containers; the Settings UI writes to `.env`, which is not persistent inside containers
 
+Optional: Password Protect the App (Basic Auth)
+- You can require a username/password across the entire app (static files and APIs), except `/api/health` for platform checks.
+- Configure via Settings (Auth section) or environment variables:
+  - `APP_AUTH_ENABLED=true`
+  - `APP_AUTH_USER=admin`
+  - `APP_AUTH_PASS=<strong-password>`
+  - `APP_AUTH_REALM=EchoScribe` (optional)
+- On Fly.io or Docker, set these via secrets/env vars (recommended):
+  - Fly: `flyctl secrets set APP_AUTH_ENABLED=true APP_AUTH_USER=admin APP_AUTH_PASS='...'`
+  - Docker: `-e APP_AUTH_ENABLED=true -e APP_AUTH_USER=admin -e APP_AUTH_PASS=...`
+
 Deploy to Fly.io
 - Prerequisites:
   - Install Fly CLI: https://fly.io/docs/hands-on/install-flyctl/
@@ -74,6 +85,7 @@ Deploy to Fly.io
   - Dockerfile installs ffmpeg and runs on port 3000; `fly.toml` maps 80/443 to 3000
   - Use `flyctl secrets` for config in production; container filesystems are ephemeral
   - Health check: `/api/health`
+  - Optional Basic Auth: set `APP_AUTH_*` secrets to protect the app with a password
 
 Environment Variables (server/.env)
 - `OPENAI_API_KEY` — OpenAI key
@@ -82,7 +94,8 @@ Environment Variables (server/.env)
 - `PUBLIC_BASE_URL` — Optional, public URL (for generated links)
 - `TRANSCRIBE_AUDIO_BITRATE_KBPS` — Optional, audio bitrate (default 48)
 - `TRANSCRIBE_MAX_CHUNK_MB` — Optional, per-chunk max MB (default 24)
-- `TRANSCRIBE_MAX_DURATION_SEC` — Optional, per-chunk max seconds (default 1400)
+- `TRANSCRIBE_MAX_DURATION_SEC` — Optional, per-chunk max seconds (default 300)
+  - Note: We recommend leaving this at ~500 seconds for best reliability and throughput with the current transcription service.
 
 S3 Setup
 - See `s3-setup.md` for a detailed guide and least-privilege IAM policy.

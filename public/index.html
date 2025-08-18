@@ -132,6 +132,30 @@
             <button type="submit" class="icon-btn" style="background: var(--accent); color: white; border-color: var(--accent)">Save</button>
           </div>
         </form>
+        <hr style="border-color: var(--border); border-width: 0 0 1px; margin: 14px 0;" />
+        <form id="authForm" class="settings-form">
+          <div class="field">
+            <label><input type="checkbox" id="APP_AUTH_ENABLED" /> Require password (Basic Auth)</label>
+          </div>
+          <div class="field two">
+            <div>
+              <label>Username</label>
+              <input type="text" id="APP_AUTH_USER" placeholder="admin" />
+            </div>
+            <div>
+              <label>Password</label>
+              <input type="password" id="APP_AUTH_PASS" placeholder="••••••" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Realm (shown in browser dialog)</label>
+            <input type="text" id="APP_AUTH_REALM" placeholder="EchoScribe" />
+          </div>
+          <div class="modal-actions">
+            <span style="flex:1"></span>
+            <button type="button" id="authSaveBtn" class="icon-btn" style="background: var(--accent); color: white; border-color: var(--accent)">Save Auth</button>
+          </div>
+        </form>
       </div>
     </div>
     <script src="/app.js"></script>

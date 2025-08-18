@@ -22,6 +22,8 @@ const settingsForm = document.getElementById('settingsForm');
 const onboardingHint = document.getElementById('onboardingHint');
 const testConnectionBtn = document.getElementById('testConnectionBtn');
 const testResultEl = document.getElementById('testResult');
+const authForm = document.getElementById('authForm');
+const authSaveBtn = document.getElementById('authSaveBtn');
 
 let configStatus = { configured: true, missing: [] };
 
@@ -285,6 +287,11 @@ async function preloadSettings() {
   setValue('TRANSCRIBE_MAX_CHUNK_MB', cfg.TRANSCRIBE_MAX_CHUNK_MB);
   setValue('TRANSCRIBE_MAX_DURATION_SEC', cfg.TRANSCRIBE_MAX_DURATION_SEC);
   setValue('PUBLIC_BASE_URL', cfg.PUBLIC_BASE_URL);
+  // Auth
+  const cb = document.getElementById('APP_AUTH_ENABLED');
+  if (cb) cb.checked = String(cfg.APP_AUTH_ENABLED || 'false').toLowerCase() === 'true';
+  setValue('APP_AUTH_USER', cfg.APP_AUTH_USER);
+  setValue('APP_AUTH_REALM', cfg.APP_AUTH_REALM);
   // Do not prefill secrets; leave blank to keep unchanged
 }
 
@@ -352,3 +359,22 @@ async function testConnection() {
 }
 
 if (testConnectionBtn) testConnectionBtn.addEventListener('click', testConnection);
+
+if (authSaveBtn) {
+  authSaveBtn.addEventListener('click', async () => {
+    const payload = {};
+    const cb = document.getElementById('APP_AUTH_ENABLED');
+    payload.APP_AUTH_ENABLED = cb && cb.checked ? 'true' : 'false';
+    ['APP_AUTH_USER','APP_AUTH_PASS','APP_AUTH_REALM'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.value.trim() !== '') payload[id] = el.value.trim();
+    });
+    const res = await fetch('/api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    if (res.ok) {
+      alert('Authentication settings saved.');
+    } else {
+      const data = await res.json().catch(() => ({}));
+      alert('Failed to save auth settings: ' + (data.error || res.statusText));
+    }
+  });
+}

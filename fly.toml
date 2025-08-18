@@ -1,29 +1,35 @@
-# Sample Fly.io config. Replace app name before deploying.
-app = "echoscribe-change-me"
+# fly.toml app configuration file generated for echoscribe on 2025-08-14T19:48:40+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-# Optional: choose region, e.g. primary_region = "iad"
-# primary_region = "iad"
+app = 'echoscribe'
+primary_region = 'lhr'
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
 
 [env]
-  NODE_ENV = "production"
+  NODE_ENV = 'production'
 
 [[services]]
+  protocol = 'tcp'
   internal_port = 3000
-  protocol = "tcp"
 
   [[services.ports]]
-    handlers = ["http"]
     port = 80
+    handlers = ['http']
 
   [[services.ports]]
-    handlers = ["tls", "http"]
     port = 443
+    handlers = ['tls', 'http']
 
   [services.concurrency]
-    type = "requests"
+    type = 'requests'
     hard_limit = 100
     soft_limit = 50
 
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
